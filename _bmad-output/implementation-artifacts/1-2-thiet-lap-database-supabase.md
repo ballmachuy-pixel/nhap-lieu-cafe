@@ -1,6 +1,6 @@
 # Story 1.2: Thiết lập Database Supabase & Append-only Schema
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
