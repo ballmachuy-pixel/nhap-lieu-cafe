@@ -16,14 +16,15 @@ export async function loginWithPin(pin: string) {
     }
 
     // Set cookie
-    cookies().set("session_role", data.role, {
+    const cookieStore = await cookies();
+    cookieStore.set("session_role", data.role, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 30, // 30 days
       path: "/",
     });
     
-    cookies().set("session_name", data.name, {
+    cookieStore.set("session_name", data.name, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 30, // 30 days
@@ -37,12 +38,14 @@ export async function loginWithPin(pin: string) {
 }
 
 export async function logout() {
-  cookies().delete("session_role");
-  cookies().delete("session_name");
+  const cookieStore = await cookies();
+  cookieStore.delete("session_role");
+  cookieStore.delete("session_name");
 }
 
 export async function getSession() {
-  const role = cookies().get("session_role")?.value;
-  const name = cookies().get("session_name")?.value;
+  const cookieStore = await cookies();
+  const role = cookieStore.get("session_role")?.value;
+  const name = cookieStore.get("session_name")?.value;
   return { role, name };
 }
