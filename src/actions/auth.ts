@@ -12,7 +12,7 @@ export async function loginWithPin(pin: string) {
       .single();
 
     if (error || !data) {
-      return { success: false, message: "Mã PIN không đúng" };
+      return { success: false, message: `Mã PIN không đúng (Lỗi: ${error?.message || "Không tìm thấy user"})` };
     }
 
     // Set cookie
