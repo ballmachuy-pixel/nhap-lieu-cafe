@@ -2,16 +2,28 @@ export async function GET() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // Show full URL (not sensitive) and key prefix
   const info: Record<string, unknown> = {
     url_full: url ?? "MISSING",
     url_length: url?.length ?? 0,
+    url_chars: url ? Array.from(url).map((c, i) => `${i}:${c}(${c.charCodeAt(0)})`) : [],
     key_exists: !!key,
     key_length: key?.length ?? 0,
     key_prefix: key?.substring(0, 15) ?? "MISSING",
   };
 
-  // Try to actually connect to Supabase
+  // Try basic fetch to root
+  if (url) {
+    try {
+      const res = await fetch(url, { method: "HEAD" });
+      info.root_status = res.status;
+    } catch (err: any) {
+      info.root_error = err.message;
+      info.root_cause = err.cause?.message ?? "no cause";
+      info.root_code = err.cause?.code ?? "no code";
+    }
+  }
+
+  // Try REST endpoint
   if (url && key) {
     try {
       const res = await fetch(`${url}/rest/v1/users?select=count`, {
@@ -20,13 +32,14 @@ export async function GET() {
           Authorization: `Bearer ${key}`,
         },
       });
-      info.fetch_status = res.status;
-      info.fetch_ok = res.ok;
-      info.fetch_body = await res.text();
+      info.rest_status = res.status;
+      info.rest_body = await res.text();
     } catch (err: any) {
-      info.fetch_error = err.message;
+      info.rest_error = err.message;
+      info.rest_cause = err.cause?.message ?? "no cause";
+      info.rest_code = err.cause?.code ?? "no code";
     }
   }
 
-  return Response.json(info);
+  return Response.json(info, { headers: { "Content-Type": "application/json" } });
 }
