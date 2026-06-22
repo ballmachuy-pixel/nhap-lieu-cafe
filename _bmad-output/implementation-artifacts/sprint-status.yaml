@@ -42,22 +42,22 @@ tracking_system: "file-system"
 story_location: "c:/Users/Admin/Desktop/nhập liệu/_bmad-output/implementation-artifacts"
 
 development_status:
-  epic-1: in-progress
+  epic-1: done
   1-1-khoi-tao-project-design-system: done
   1-2-thiet-lap-database-supabase: done
-  1-3-man-hinh-dinh-danh: review
+  1-3-man-hinh-dinh-danh: done
   epic-1-retrospective: optional
-  epic-2: backlog
-  2-1-giao-dien-form-nhap-nhanh: backlog
-  2-2-tinh-nang-autocomplete: backlog
-  2-3-xu-ly-luu-phieu: backlog
+  epic-2: done
+  2-1-giao-dien-form-nhap-nhanh: done
+  2-2-tinh-nang-autocomplete: done
+  2-3-xu-ly-luu-phieu: done
   epic-2-retrospective: optional
-  epic-3: backlog
-  3-1-danh-sach-phieu-nhap: backlog
-  3-2-loc-tim-kiem: backlog
-  3-3-form-sua-loi: backlog
+  epic-3: done
+  3-1-danh-sach-phieu-nhap: done
+  3-2-loc-tim-kiem: done
+  3-3-form-sua-loi: done
   epic-3-retrospective: optional
-  epic-4: backlog
-  4-1-the-bao-cao-hom-nay: backlog
-  4-2-bao-cao-tuan-thang: backlog
+  epic-4: done
+  4-1-the-bao-cao-hom-nay: done
+  4-2-bao-cao-tuan-thang: skipped
   epic-4-retrospective: optional
