@@ -2,6 +2,7 @@ import { getRecentEntries } from "@/actions/entries";
 import Link from "next/link";
 import { FilterBar } from "./filter-bar";
 import { HistoryList } from "./history-list";
+import { getSession } from "@/actions/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,7 @@ export default async function HistoryPage({
   const filterDate = typeof resolvedParams.date === "string" ? resolvedParams.date : undefined;
 
   const entries = await getRecentEntries(filterDate);
+  const session = await getSession();
 
   return (
     <main className="flex-1 p-4 sm:p-8 bg-surface-base">
@@ -30,7 +32,7 @@ export default async function HistoryPage({
 
         <FilterBar />
 
-        <HistoryList entries={entries} />
+        <HistoryList entries={entries} sessionName={session.name || "Không xác định"} />
       </div>
     </main>
   );

@@ -5,7 +5,7 @@ import { EntryRow } from "@/actions/entries";
 import { formatCurrency } from "@/lib/utils";
 import { EditEntryDialog } from "./edit-entry-dialog";
 
-export function HistoryList({ entries }: { entries: EntryRow[] }) {
+export function HistoryList({ entries, sessionName }: { entries: EntryRow[], sessionName: string }) {
   const [editingEntry, setEditingEntry] = useState<EntryRow | null>(null);
 
   // Nhóm phiếu theo ngày
@@ -110,6 +110,7 @@ export function HistoryList({ entries }: { entries: EntryRow[] }) {
       {editingEntry && (
         <EditEntryDialog
           entry={editingEntry}
+          sessionName={sessionName}
           onClose={() => setEditingEntry(null)}
         />
       )}

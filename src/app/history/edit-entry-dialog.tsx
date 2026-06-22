@@ -8,9 +8,11 @@ import { useRouter } from "next/navigation";
 
 export function EditEntryDialog({
   entry,
+  sessionName,
   onClose,
 }: {
   entry: EntryRow;
+  sessionName: string;
   onClose: () => void;
 }) {
   const router = useRouter();
@@ -42,7 +44,7 @@ export function EditEntryDialog({
       return;
     }
 
-    const createdBy = localStorage.getItem("honor_identity") || "Không xác định";
+    const createdBy = sessionName || "Không xác định";
 
     setIsSubmitting(true);
     const toastId = toast.loading("Đang sửa phiếu...");

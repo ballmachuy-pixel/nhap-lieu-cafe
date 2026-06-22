@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 const COMMON_UNITS = ["kg", "lít", "cái", "hộp", "gói", "bó", "lạng", "chai", "lon", "túi"];
 
-export function EntryForm() {
+export function EntryForm({ sessionName }: { sessionName: string }) {
   const [date, setDate] = useState(getTodayStr());
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -53,7 +53,7 @@ export function EntryForm() {
       return;
     }
 
-    const createdBy = localStorage.getItem("honor_identity") || "Không xác định";
+    const createdBy = sessionName || "Không xác định";
 
     setIsSubmitting(true);
     const toastId = toast.loading("Đang lưu phiếu...");

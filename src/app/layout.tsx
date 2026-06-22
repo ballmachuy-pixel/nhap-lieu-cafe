@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AuthGuard } from "@/components/auth-guard";
 import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin", "vietnamese"] });
@@ -19,9 +18,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body className={`${inter.className} min-h-screen bg-surface-base text-ink-primary flex flex-col`}>
-        <AuthGuard>
-          {children}
-        </AuthGuard>
+        {children}
         <Toaster position="bottom-center" richColors />
       </body>
     </html>

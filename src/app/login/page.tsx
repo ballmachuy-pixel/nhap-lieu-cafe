@@ -1,40 +1,85 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-const IDENTITIES = [
-  { id: "chu_quan", label: "Chủ quán" },
-  { id: "nhan_vien_1", label: "Nhân viên 1" },
-  { id: "nhan_vien_2", label: "Nhân viên 2" },
-];
+import { loginWithPin } from "@/actions/auth";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [pin, setPin] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSelectIdentity = (label: string) => {
-    localStorage.setItem("honor_identity", label);
-    // Chuyển hướng về trang chủ
-    router.push("/");
+  const handlePress = async (num: string) => {
+    if (isLoading || pin.length >= 4) return;
+    const newPin = pin + num;
+    setPin(newPin);
+
+    if (newPin.length === 4) {
+      setIsLoading(true);
+      const res = await loginWithPin(newPin);
+      if (res.success) {
+        toast.success(`Đăng nhập thành công!`);
+        router.push("/");
+      } else {
+        toast.error(res.message);
+        setPin("");
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleDelete = () => {
+    setPin(pin.slice(0, -1));
   };
 
   return (
     <main className="min-h-screen flex items-center justify-center p-6 bg-surface-base">
-      <div className="w-full max-w-sm space-y-8">
+      <div className="w-full max-w-sm space-y-12">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-ink-primary">Nhập Liệu Quán Cafe</h1>
-          <p className="text-primary-700">Chọn người đang trực để bắt đầu</p>
+          <h1 className="text-3xl font-bold text-ink-primary">Đăng Nhập</h1>
+          <p className="text-primary-700">Nhập mã PIN để vào ứng dụng</p>
         </div>
 
-        <div className="space-y-4">
-          {IDENTITIES.map((identity) => (
+        {/* PIN Display */}
+        <div className="flex justify-center gap-4">
+          {[0, 1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                i < pin.length ? "bg-primary-600 scale-110" : "bg-primary-200"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Numpad */}
+        <div className="grid grid-cols-3 gap-4">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
             <button
-              key={identity.id}
-              onClick={() => handleSelectIdentity(identity.label)}
-              className="w-full h-16 rounded-2xl bg-primary-600 hover:bg-primary-700 active:scale-95 transition-all text-surface-base font-semibold text-lg flex items-center justify-center shadow-sm"
+              key={num}
+              disabled={isLoading}
+              onClick={() => handlePress(num.toString())}
+              className="h-16 rounded-2xl bg-surface-base border border-primary-100 hover:bg-primary-50 active:bg-primary-200 text-2xl font-semibold text-ink-primary shadow-sm transition-colors"
             >
-              {identity.label}
+              {num}
             </button>
           ))}
+          <div /> {/* Trống */}
+          <button
+            disabled={isLoading}
+            onClick={() => handlePress("0")}
+            className="h-16 rounded-2xl bg-surface-base border border-primary-100 hover:bg-primary-50 active:bg-primary-200 text-2xl font-semibold text-ink-primary shadow-sm transition-colors"
+          >
+            0
+          </button>
+          <button
+            disabled={isLoading || pin.length === 0}
+            onClick={handleDelete}
+            className="h-16 rounded-2xl bg-surface-base border border-primary-100 hover:bg-primary-50 active:bg-primary-200 text-xl font-medium text-primary-600 shadow-sm transition-colors flex items-center justify-center"
+          >
+            Xóa
+          </button>
         </div>
       </div>
     </main>
